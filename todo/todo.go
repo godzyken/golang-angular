@@ -3,6 +3,7 @@ package todo
 import (
 	"errors"
 	"github.com/rs/xid"
+	"gopkg.in/square/go-jose.v2"
 	"sync"
 )
 
@@ -13,6 +14,19 @@ type Todo struct {
 	Complete bool   `json:"complete"`
 }
 
+type Jwks struct {
+	Keys []jose.JSONWebKey `json:"keys"`
+}
+
+type JSONWebKeys struct {
+	Kty string `json:"kty"`
+	Kid string `json:"kid"`
+	Use string `json:"use"`
+	N   string `json:"n"`
+	E   string `json:"e"`
+	W5c string `json:"x5c"`
+}
+
 var (
 	list []Todo
 	mtx  sync.RWMutex
@@ -20,10 +34,10 @@ var (
 )
 
 func init() {
-	once.Do(initialiselist)
+	once.Do(initialiseList)
 }
 
-func initialiselist() {
+func initialiseList() {
 	list = []Todo{}
 }
 
@@ -39,7 +53,7 @@ func Add(message string) string {
 	return t.ID
 }
 
-// Delete will remove a Todo from the Todo list
+// Delete will remove a To do from the Todo list
 func Delete(id string) error {
 	location, err := findTodoLocation(id)
 	if err != nil {
