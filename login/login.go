@@ -37,5 +37,5 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, authenticator.Config.AuthCodeUrl(state), http.StatusTemporaryRedirect)
+	http.Redirect(w, r, authenticator.Config.AuthCodeURL(state), http.StatusTemporaryRedirect)
 }

@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"golang-angular/todo"
+	"github.com/godzyken/golang-angular/todo"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -11,15 +11,19 @@ import (
 
 func GetTodoListHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, todo.Get())
+	//fmt.Println("@@@@status:", c)
+	return
 }
 
 func AddTodoHandler(c *gin.Context) {
 	todoItem, statusCode, err := convertHTTPBodyToTodo(c.Request.Body)
+	err = c.BindJSON(&json.Encoder{})
 	if err != nil {
-		c.JSON(statusCode, err)
+		c.BindJSON(statusCode)
 		return
 	}
-	c.JSON(statusCode, gin.H{"id": todo.Add(todoItem.Message)})
+	c.BindJSON(gin.H{"id": todo.Add(todoItem.Message)})
+	return
 }
 
 // DeleteTodoHandler will delete a specified to do based on user http input
@@ -44,6 +48,7 @@ func CompleteTodoHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, "")
+	return
 }
 
 func convertHTTPBodyToTodo(httpBody io.ReadCloser) (todo.Todo, int, error) {
@@ -63,7 +68,3 @@ func convertJSONBodyToTodo(jsonBody []byte) (todo.Todo, int, error) {
 	}
 	return todoItem, http.StatusOK, nil
 }
-
-//func login()  {
-//	url := "https://"
-//}

@@ -16,7 +16,7 @@ type Authenticator struct {
 func NewAuthenticator() (*Authenticator, error) {
 	ctx := context.Background()
 
-	provider, err := oidc.NewProvider(ctx, "https://ev-c-559zpw.auth0.com/api/v2/")
+	provider, err := oidc.NewProvider(ctx, "https://dev-c-559zpw.auth0.com/api/v2/")
 	if err != nil {
 		log.Printf("failed to get provider: %v", err)
 		return nil, err
@@ -27,7 +27,7 @@ func NewAuthenticator() (*Authenticator, error) {
 		ClientSecret: "MSCR94_grYm42kems9ng7jPvAVOlvpHLV-c7xg4UXm190LBbgUtgwkgBujgPHzHq",
 		Endpoint:     oauth2.Endpoint{},
 		RedirectURL:  "http://localhost:3000/callback",
-		Scopes:       []string{oidc.ScopeOpenID, "profile"},
+		Scopes:       []string{oidc.ScopeOpenID, "home"},
 	}
 
 	return &Authenticator{
