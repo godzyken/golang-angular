@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/auth0-community/go-auth0"
 	"github.com/gin-gonic/gin"
-	"golang-angular/handlers"
+	"github.com/godzyken/golang-angular/handlers"
 	"gopkg.in/square/go-jose.v2"
 	"log"
 	"net/http"
@@ -38,7 +38,7 @@ func main() {
 		}
 	})
 
-	authorized := r.Group("/")
+	authorized := r.Group("/api")
 	authorized.Use(authRequired())
 	authorized.GET("/todo", handlers.GetTodoListHandler)
 	authorized.POST("/todo", handlers.AddTodoHandler)
@@ -82,7 +82,7 @@ func main() {
 
 func setAuth0Variables() {
 	audience = os.Getenv("https://golang-angular-api/")
-	domain = os.Getenv("dev-vexyz5l4.auth0.com")
+	domain = os.Getenv("dev-c-559zpw.auth0.com")
 	//domain = os.Getenv("dev-c-559zpw.auth0.com")
 }
 
@@ -90,16 +90,14 @@ func setAuth0Variables() {
 // is valid and signed by Auth0
 func authRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//
-		audience = "https://golang-angular-api/"
-		domain = "dev-c-559zpw.auth0.com"
+
 		var auth0Domain = "https://" + domain + "/"
 		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth0Domain + ".well-known/jwks.json"}, nil)
 		configuration := auth0.NewConfiguration(client, []string{audience}, auth0Domain, jose.RS256)
 		validator := auth0.NewValidator(configuration, nil)
 
-		fmt.Println("@@@client: ", client)
-		fmt.Println("@@@config: ", configuration)
+		//fmt.Println("@@@client: ", client)
+		//fmt.Println("@@@config: ", configuration)
 		fmt.Println("@@@validator: ", validator)
 
 		_, err := validator.ValidateRequest(c.Request)

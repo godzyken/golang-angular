@@ -12,6 +12,8 @@ import (
 func GetTodoListHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, todo.Get())
 	//fmt.Println("@@@@status:", c)
+	c.Header("Content-Type", "application/json")
+	c.Writer.Write([]byte{})
 	return
 }
 
@@ -23,6 +25,9 @@ func AddTodoHandler(c *gin.Context) {
 		return
 	}
 	c.BindJSON(gin.H{"id": todo.Add(todoItem.Message)})
+
+	c.Header("Content-Type", "application/json")
+	c.Writer.Write([]byte{})
 	return
 }
 
@@ -56,7 +61,7 @@ func convertHTTPBodyToTodo(httpBody io.ReadCloser) (todo.Todo, int, error) {
 	if err != nil {
 		return todo.Todo{}, http.StatusInternalServerError, err
 	}
-	defer httpBody.Close()
+	//defer httpBody.Close()
 	return convertJSONBodyToTodo(body)
 }
 
