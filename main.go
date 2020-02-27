@@ -37,9 +37,7 @@ func main() {
 		}
 	})
 
-	r.OPTIONS("/todo", func(c *gin.Context) {
-
-	})
+	r.OPTIONS("/*path", CORSMiddleware())
 
 	authorized := r.Group("/")
 	authorized.Use(authRequired())
