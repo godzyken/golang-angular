@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/auth0-community/go-auth0"
 	"github.com/gin-gonic/gin"
 	"github.com/godzyken/golang-angular/handlers"
@@ -38,7 +37,11 @@ func main() {
 		}
 	})
 
-	authorized := r.Group("/api")
+	r.OPTIONS("/todo", func(c *gin.Context) {
+
+	})
+
+	authorized := r.Group("/")
 	authorized.Use(authRequired())
 	authorized.GET("/todo", handlers.GetTodoListHandler)
 	authorized.POST("/todo", handlers.AddTodoHandler)
@@ -83,7 +86,6 @@ func main() {
 func setAuth0Variables() {
 	audience = os.Getenv("https://golang-angular-api/")
 	domain = os.Getenv("dev-c-559zpw.auth0.com")
-	//domain = os.Getenv("dev-c-559zpw.auth0.com")
 }
 
 // ValidateRequest will verify that a token received from an http request
@@ -95,11 +97,6 @@ func authRequired() gin.HandlerFunc {
 		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth0Domain + ".well-known/jwks.json"}, nil)
 		configuration := auth0.NewConfiguration(client, []string{audience}, auth0Domain, jose.RS256)
 		validator := auth0.NewValidator(configuration, nil)
-
-		//fmt.Println("@@@client: ", client)
-		//fmt.Println("@@@config: ", configuration)
-		fmt.Println("@@@validator: ", validator)
-
 		_, err := validator.ValidateRequest(c.Request)
 		if err != nil {
 			log.Println(err)
