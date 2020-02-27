@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/auth0-community/go-auth0"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/godzyken/golang-angular/handlers"
 	"gopkg.in/square/go-jose.v2"
@@ -11,6 +12,7 @@ import (
 	"os/signal"
 	"path"
 	"path/filepath"
+	"time"
 )
 
 var (
@@ -23,9 +25,17 @@ var (
 func main() {
 	gin.SetMode(gin.DebugMode)
 	r := gin.Default()
-	r.Use(CORSMiddleware())
+	//r.Use(CORSMiddleware())
+	r.Use(cors.New(cors.Config{
+		AllowOriginFunc:  func(origin string) bool { return true },
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	setAuth0Variables()
 
+	r.OPTIONS("/*path", CORSMiddleware())
 	// This will ensure that the angular files are served correctly
 	r.NoRoute(func(c *gin.Context) {
 		dir, file := path.Split(c.Request.RequestURI)
@@ -37,10 +47,9 @@ func main() {
 		}
 	})
 
-	r.OPTIONS("/*path", CORSMiddleware())
+	authorized := r.Group("/", authRequired())
 
-	authorized := r.Group("/")
-	authorized.Use(authRequired())
+	// Todos
 	authorized.GET("/todo", handlers.GetTodoListHandler)
 	authorized.POST("/todo", handlers.AddTodoHandler)
 	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
@@ -115,14 +124,15 @@ func terminateWithError(statusCode int, message string, c *gin.Context) {
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://dev-c-559zpw.auth0.com")
+		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT, UPDATE")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.JSON(http.StatusOK, struct{}{})
+		//c.JSON(http.StatusOK, struct{}{})
 
 		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
+			c.AbortWithStatus(200)
 			return
 		} else {
 			c.Next()

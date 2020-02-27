@@ -3,7 +3,6 @@ package todo
 import (
 	"errors"
 	"github.com/rs/xid"
-	"gopkg.in/square/go-jose.v2"
 	"sync"
 )
 
@@ -14,30 +13,25 @@ type Todo struct {
 	Complete bool   `json:"complete"`
 }
 
-type Jwks struct {
-	Keys []jose.JSONWebKey `json:"keys"`
-}
-
-type JSONWebKeys struct {
-	Kty string `json:"kty"`
-	Kid string `json:"kid"`
-	Use string `json:"use"`
-	N   string `json:"n"`
-	E   string `json:"e"`
-	W5c string `json:"x5c"`
-}
+//type Jwks struct {
+//	Keys []jose.JSONWebKey `json:"keys"`
+//}
+//
+//type JSONWebKeys struct {
+//	Kty string `json:"kty"`
+//	Kid string `json:"kid"`
+//	Use string `json:"use"`
+//	N   string `json:"n"`
+//	E   string `json:"e"`
+//	W5c string `json:"x5c"`
+//}
 
 var (
 	list []Todo
 	mtx  sync.RWMutex
-	once sync.Once
 )
 
 func init() {
-	once.Do(initialiseList)
-}
-
-func initialiseList() {
 	list = []Todo{}
 }
 

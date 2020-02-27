@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/auth0-community/go-auth0 v1.0.0
 	github.com/coreos/go-oidc v2.2.1+incompatible
+	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.5.0
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/godzyken/golang-angular v0.0.0-20200209215835-e1b2bd4e898b

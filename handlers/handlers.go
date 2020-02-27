@@ -11,24 +11,16 @@ import (
 
 func GetTodoListHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, todo.Get())
-	//fmt.Println("@@@@status:", c)
-	c.Header("Content-Type", "application/json")
-	c.Writer.Write([]byte{})
-	return
 }
 
 func AddTodoHandler(c *gin.Context) {
 	todoItem, statusCode, err := convertHTTPBodyToTodo(c.Request.Body)
 	err = c.BindJSON(&json.Encoder{})
 	if err != nil {
-		c.BindJSON(statusCode)
+		c.JSON(statusCode, err)
 		return
 	}
-	c.BindJSON(gin.H{"id": todo.Add(todoItem.Message)})
-
-	c.Header("Content-Type", "application/json")
-	c.Writer.Write([]byte{})
-	return
+	c.JSON(statusCode, gin.H{"id": todo.Add(todoItem.Message)})
 }
 
 // DeleteTodoHandler will delete a specified to do based on user http input
