@@ -23,19 +23,20 @@ var (
 )
 
 func main() {
+	setAuth0Variables()
 	gin.SetMode(gin.DebugMode)
 	r := gin.Default()
 	//r.Use(CORSMiddleware())
 	r.Use(cors.New(cors.Config{
 		AllowOriginFunc:  func(origin string) bool { return true },
+		AllowOrigins:     []string{"*", "http://dev-c-559zpw.auth0.com"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	setAuth0Variables()
 
-	r.OPTIONS("/*path", CORSMiddleware())
+	//r.OPTIONS("/*path", CORSMiddleware())
 	// This will ensure that the angular files are served correctly
 	r.NoRoute(func(c *gin.Context) {
 		dir, file := path.Split(c.Request.RequestURI)
@@ -47,9 +48,10 @@ func main() {
 		}
 	})
 
-	authorized := r.Group("/", authRequired())
+	authorized := r.Group("/")
 
 	// Todos
+	authorized.Use(authRequired())
 	authorized.GET("/todo", handlers.GetTodoListHandler)
 	authorized.POST("/todo", handlers.AddTodoHandler)
 	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
