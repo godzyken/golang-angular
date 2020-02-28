@@ -28,10 +28,21 @@ func main() {
 	r := gin.Default()
 	//r.Use(CORSMiddleware())
 	r.Use(cors.New(cors.Config{
-		AllowOriginFunc:  func(origin string) bool { return true },
-		AllowOrigins:     []string{"*", "http://dev-c-559zpw.auth0.com"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+		AllowOriginFunc: func(origin string) bool { return true },
+		AllowOrigins:    []string{"*", "http://dev-c-559zpw.auth0.com"},
+		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "UPDATE"},
+		AllowHeaders: []string{
+			"Origin",
+			"Content-Length",
+			"Content-Type",
+			"Authorization",
+			"accept",
+			"origin",
+			"Cache-Control",
+			"X-Requested-With",
+			"Accept-Encoding",
+			"X-CSRF-Token",
+		},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
