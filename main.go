@@ -1,4 +1,4 @@
-package main
+package router
 
 import (
 	"github.com/auth0-community/go-auth0"
@@ -63,10 +63,10 @@ func main() {
 
 	// Todos
 	authorized.Use(authRequired())
-	authorized.GET("/todo", handlers.GetTodoListHandler)
-	authorized.POST("/todo", handlers.AddTodoHandler)
-	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
-	authorized.PUT("/todo", handlers.CompleteTodoHandler)
+	authorized.GET("/models", handlers.GetTodoListHandler)
+	authorized.POST("/models", handlers.AddTodoHandler)
+	authorized.DELETE("/models/:id", handlers.DeleteTodoHandler)
+	authorized.PUT("/models", handlers.CompleteTodoHandler)
 
 	go func() {
 		err := r.Run("127.0.0.1:3000")
