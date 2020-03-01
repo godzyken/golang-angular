@@ -63,10 +63,10 @@ func main() {
 
 	// Todos
 	authorized.Use(authRequired())
-	authorized.GET("/models", handlers.GetTodoListHandler)
-	authorized.POST("/models", handlers.AddTodoHandler)
-	authorized.DELETE("/models/:id", handlers.DeleteTodoHandler)
-	authorized.PUT("/models", handlers.CompleteTodoHandler)
+	authorized.GET("/todo", handlers.GetTodoListHandler)
+	authorized.POST("/todo", handlers.AddTodoHandler)
+	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
+	authorized.PUT("/todo", handlers.CompleteTodoHandler)
 
 	go func() {
 		err := r.Run("127.0.0.1:3000")

@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"golang-angular/models"
+	"golang-angular/todo"
 	"log"
 	"net/http"
 )
@@ -62,7 +62,7 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	var task models.ToDoList
+	var task todo.ToDoList
 	_ = json.NewDecoder(r.Body).Decode(&task)
 	// fmt.Println(task, r.Body)
 	insertOneTask(task)
@@ -146,7 +146,7 @@ func getAllTask() []primitive.M {
 }
 
 // Insert one task in the DB
-func insertOneTask(task models.ToDoList) {
+func insertOneTask(task todo.ToDoList) {
 	insertResult, err := collection.InsertOne(context.Background(), task)
 
 	if err != nil {

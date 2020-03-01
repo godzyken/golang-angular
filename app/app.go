@@ -16,7 +16,7 @@ var (
 func Init() error {
 	Store = sessions.NewFilesystemStore("", []byte("something-very-secret"))
 	gob.Register(map[string]interface{}{})
-	http.HandleFunc("/models", viewRecord)
+	http.HandleFunc("/todo", viewRecord)
 	return nil
 }
 

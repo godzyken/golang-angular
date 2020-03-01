@@ -1,4 +1,4 @@
-package models
+package todo
 
 import (
 	"errors"
@@ -64,7 +64,7 @@ func Delete(id string) error {
 	return nil
 }
 
-// Complete will set the complete boolean to true, marking a models as
+// Complete will set the complete boolean to true, marking a todo as
 // completed
 func Complete(id string) error {
 	location, err := findTodoLocation(id)
@@ -91,7 +91,7 @@ func findTodoLocation(id string) (int, error) {
 			return i, nil
 		}
 	}
-	return 0, errors.New("could not find models based on id")
+	return 0, errors.New("could not find todo based on id")
 }
 
 func removeElementByLocation(i int) {

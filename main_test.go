@@ -74,7 +74,7 @@ func Test_sendingToken(t *testing.T) {
 		})
 	}
 
-	url := "https://localhost:3000/models"
+	url := "https://localhost:3000/todo"
 
 	payload := strings.NewReader("{\"client_id\":\"u2ZbAXZKz4kM0MM27o6R7mmYQ8pteoFw\",\"client_secret\":\"MSCR94_grYm42kems9ng7jPvAVOlvpHLV-c7xg4UXm190LBbgUtgwkgBujgPHzHq\",\"audience\":\"https://dev-c-559zpw.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}")
 
