@@ -1,4 +1,4 @@
-package router
+package main
 
 import (
 	"github.com/auth0-community/go-auth0"
