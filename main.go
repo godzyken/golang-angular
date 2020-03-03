@@ -30,6 +30,7 @@ func main() {
 		AllowOriginFunc: func(origin string) bool { return true },
 		AllowOrigins:    []string{"*", "http://dev-c-559zpw.auth0.com"},
 		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "UPDATE"},
+		ExposeHeaders:   []string{"Content-Length"},
 		AllowHeaders: []string{
 			"Origin",
 			"Content-Length",
@@ -62,6 +63,7 @@ func main() {
 	// Todos
 	authorized.Use(authRequired())
 	authorized.GET("/todo", handlers.GetTodoListHandler)
+	authorized.OPTIONS("/todo", preflight)
 	authorized.POST("/todo", handlers.AddTodoHandler)
 	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
 	authorized.PUT("/todo", handlers.CompleteTodoHandler)
@@ -114,4 +116,10 @@ func terminateWithError(statusCode int, message string, c *gin.Context) {
 	c.JSON(statusCode, gin.H{"error": message})
 	c.Abort()
 	return
+}
+
+func preflight(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Headers", "access-control-origin, access-control-allow-headers")
+	c.JSON(http.StatusOK, struct{}{})
 }
