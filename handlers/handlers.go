@@ -151,8 +151,3 @@ func Delete(c *gin.Context) {
 }
 
 //--------------------------END Song-------------------//
-
-// Middlewares
-func Connect(c *gin.Context) {
-	s := db.Session.Clone()
-}

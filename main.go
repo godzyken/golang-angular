@@ -18,8 +18,6 @@ import (
 var (
 	audience string
 	domain   string
-	//validator *auth0.JWTValidator
-	//AdminGroup = "Admin"
 )
 
 func main() {
@@ -30,7 +28,6 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.Use(middlewares.Connect)
 	r.Use(cors.New(cors.Config{
 		AllowOriginFunc: func(origin string) bool { return true },
 		AllowOrigins:    []string{"*", "http://dev-c-559zpw.auth0.com"},
@@ -85,25 +82,6 @@ func main() {
 
 	sig := <-sigChan
 	log.Println("Received terminate, graceFul shutdown", sig)
-
-	// User Functions - located in users.go
-	//user := r.Group("/user")
-	//user.Use(AuthRequired())
-	//{
-	//	user.GET("/info", userInfo)
-	//	user.PUT("/update", updateUser)
-	//	user.DELETE("/delete", deleteUser)
-	//}
-
-	//manager := manage.NewDefaultManager()
-	//
-	////use mongoDB token store
-	//manager.MapTokenStorage(
-	//	mongo.NewTokenStore(mongo.NewConfig(
-	//		"mongodb://127.0.0.1:27017",
-	//		"oauth2",
-	//	)),
-	//)
 
 }
 
