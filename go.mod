@@ -10,7 +10,6 @@ require (
 	github.com/godzyken/golang-angular v0.0.0-20200209215835-e1b2bd4e898b
 	github.com/rs/xid v1.2.1
 	github.com/smartystreets/goconvey v1.6.4
-	go.mongodb.org/mongo-driver v1.3.0
 	golang.org/x/crypto v0.0.0-20200208060501-ecb85df21340 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	gopkg.in/oauth2.v3 v3.12.0

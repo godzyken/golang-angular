@@ -27,6 +27,10 @@ func main() {
 	gin.SetMode(gin.DebugMode)
 	r := gin.Default()
 	//r.Use(CORSMiddleware())
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+
+	r.Use(middlewares.Connect)
 	r.Use(cors.New(cors.Config{
 		AllowOriginFunc: func(origin string) bool { return true },
 		AllowOrigins:    []string{"*", "http://dev-c-559zpw.auth0.com"},
@@ -59,7 +63,7 @@ func main() {
 		}
 	})
 
-	authorized := r.Group("/")
+	authorized := r.Group("/api")
 
 	// Todos
 	authorized.Use(authRequired())
