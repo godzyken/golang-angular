@@ -24,10 +24,8 @@ func main() {
 	setAuth0Variables()
 	gin.SetMode(gin.DebugMode)
 	r := gin.Default()
-	//r.Use(CORSMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-
 	r.Use(cors.New(cors.Config{
 		AllowOriginFunc: func(origin string) bool { return true },
 		AllowOrigins:    []string{"*", "http://dev-c-559zpw.auth0.com"},
@@ -48,7 +46,6 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	//r.OPTIONS("/*path", CORSMiddleware())
 	// This will ensure that the angular files are served correctly
 	r.NoRoute(func(c *gin.Context) {
 		dir, file := path.Split(c.Request.RequestURI)
@@ -68,6 +65,9 @@ func main() {
 	authorized.POST("/todo", handlers.AddTodoHandler)
 	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
 	authorized.PUT("/todo", handlers.CompleteTodoHandler)
+
+	// Songs
+	authorized.POST("/song/createAsong", handlers.CreateAsong)
 
 	go func() {
 		err := r.Run("127.0.0.1:3000")
@@ -114,23 +114,4 @@ func terminateWithError(statusCode int, message string, c *gin.Context) {
 	c.JSON(statusCode, gin.H{"error": message})
 	c.Abort()
 	return
-}
-
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://dev-c-559zpw.auth0.com")
-		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT, UPDATE")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		//c.JSON(http.StatusOK, struct{}{})
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(200)
-			return
-		} else {
-			c.Next()
-		}
-	}
 }
