@@ -3,15 +3,8 @@ package todo
 import (
 	"errors"
 	"github.com/rs/xid"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"sync"
 )
-
-type ToDoList struct {
-	ID     primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Task   Todo               `json:"task,omitempty"`
-	Status bool               `json:"status,omitempty"`
-}
 
 // To do data structure for a task with a description of what to do
 type Todo struct {
@@ -19,19 +12,6 @@ type Todo struct {
 	Message  string `json:"message"`
 	Complete bool   `json:"complete"`
 }
-
-//type Jwks struct {
-//	Keys []jose.JSONWebKey `json:"keys"`
-//}
-//
-//type JSONWebKeys struct {
-//	Kty string `json:"kty"`
-//	Kid string `json:"kid"`
-//	Use string `json:"use"`
-//	N   string `json:"n"`
-//	E   string `json:"e"`
-//	W5c string `json:"x5c"`
-//}
 
 var (
 	list []Todo
