@@ -59,7 +59,7 @@ func convertHTTPBodyToTodo(httpBody io.ReadCloser) (todo.Todo, int, error) {
 	if err != nil {
 		return todo.Todo{}, http.StatusInternalServerError, err
 	}
-	//defer httpBody.Close()
+	defer httpBody.Close()
 	return convertJSONBodyToTodo(body)
 }
 
