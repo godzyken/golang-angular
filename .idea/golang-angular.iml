@@ -2,6 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$/../todo/pkg/mod/github.com/godzyken/golang-angular@v0.0.0-20200209215835-e1b2bd4e898b/models" />
     <content url="file://$MODULE_DIR$/../ui" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
