@@ -17,9 +17,16 @@ type Song struct {
 	UpdatedOn int64         `json:"updated_on" bson:"updated_on"`
 }
 
-//type User struct {
-//	Id       bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
-//	Username string        `json:"username" form:"username" binding:"required" bson:"username"`
-//	Password string        `json:"password" form:"password" binding:"required" bson:"password"`
-//	Email    string        `json:"email" form:"email" binding:"required" bson:"email"`
-//}
+type User struct {
+	Id       bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
+	Username string        `json:"username" form:"username" binding:"required" bson:"username"`
+	Password string        `json:"password" form:"password" binding:"required" bson:"password"`
+	Email    string        `json:"email" form:"email" binding:"required" bson:"email"`
+}
+
+type Profile struct {
+	Id       bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
+	Username string        `json:"username" form:"username" binding:"required" bson:"username"`
+	Password string        `json:"password" form:"password" binding:"required" bson:"password"`
+	Email    string        `json:"email" form:"email" binding:"required" bson:"email"`
+}

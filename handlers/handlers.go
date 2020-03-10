@@ -21,7 +21,7 @@ func GetTodoListHandler(c *gin.Context) {
 // Addtodo will add a message on the list
 func AddTodoHandler(c *gin.Context) {
 	todoItem, statusCode, err := convertHTTPBodyToTodo(c.Request.Body)
-	err = c.BindJSON(&json.Encoder{})
+	//err = c.BindJSON(&json.Encoder{})
 	if err != nil {
 		c.JSON(statusCode, err)
 		return
@@ -51,7 +51,6 @@ func CompleteTodoHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, "")
-	return
 }
 
 func convertHTTPBodyToTodo(httpBody io.ReadCloser) (todo.Todo, int, error) {

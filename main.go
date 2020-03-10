@@ -68,6 +68,8 @@ func main() {
 	authorized.DELETE("/todo/:id", handlers.DeleteTodoHandler)
 	authorized.PUT("/todo", handlers.CompleteTodoHandler)
 
+	// Profile
+
 	// Songs
 	authorized.POST("/song/createAsong", handlers.CreateAsong)
 
@@ -115,7 +117,6 @@ func authRequired() gin.HandlerFunc {
 func terminateWithError(statusCode int, message string, c *gin.Context) {
 	c.JSON(statusCode, gin.H{"error": message})
 	c.Abort()
-	return
 }
 
 func preflight(c *gin.Context) {
