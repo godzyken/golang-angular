@@ -19,8 +19,8 @@ type Songs []Song
 // To do data structure for a task with a description of what to do
 type Todo struct {
 	ID       string `json:"_id" bson:"_id,omitempty"`
-	Message  string `json:"message"`
-	Complete bool   `json:"complete"`
+	Message  string `json:"message" bson:"message"`
+	Complete bool   `json:"complete" bson:"complete"`
 }
 
 type Todos []Todo
@@ -51,4 +51,36 @@ func (t *Todo) String() string {
 
 func (u *User) String() string {
 	return fmt.Sprintf("%d, de \"%s\"", (*u).ID, (*u).Username)
+}
+
+func (m *DbMongo) GetSong() (songs []Song, err error) {
+	session := m.Session.Clone()
+	defer session.Close()
+
+	err = session.DB(m.SongsCollection).C("Song").Find(bson.M{}).All(&songs)
+	return songs, err
+}
+
+func (m *DbMongo) PostSong(song *Song) (err error) {
+	session := m.Session.Clone()
+	defer session.Close()
+
+	err = session.DB(m.SongsCollection).C("Song").Insert(&song)
+	return err
+}
+
+func (m *DbMongo) GetTogo() (todos []Todo, err error) {
+	session := m.Session.Clone()
+	defer session.Close()
+
+	err = session.DB(m.TodosCollection).C("Todo").Find(bson.M{}).All(&todos)
+	return todos, err
+}
+
+func (m *DbMongo) PostTodo(todo *Todo) (err error) {
+	session := m.Session.Clone()
+	defer session.Close()
+
+	err = session.DB(m.SongsCollection).C("Todo").Insert(&todo)
+	return err
 }

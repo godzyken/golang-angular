@@ -1,12 +1,17 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"reflect"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -121,4 +126,44 @@ func Test_terminateWithError(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 		})
 	}
+}
+
+func TestSetupRouter(t *testing.T) {
+	fmt.Println("start router")
+	testRouter := SetupRouter()
+
+	postValues := url.Values{}
+	postValues.Set("song", rndStr(4))
+	postDataStr := postValues.Encode()
+	postDataBytes := []byte(postDataStr)
+	postBytesReader := bytes.NewReader(postDataBytes)
+
+	req, err := http.NewRequest("GET", "/song", nil)
+	post, err := http.NewRequest("POST", "/song", postBytesReader)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	wg := &sync.WaitGroup{}
+	for count := 0; count < 2; count++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			response := httptest.NewRecorder()
+			testRouter.ServeHTTP(response, req)
+			testRouter.ServeHTTP(response, post)
+			fmt.Println(response.Body)
+		}()
+	}
+	wg.Wait()
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func rndStr(n int) string {
+	rnd_str := make([]rune, n)
+	for i := range rnd_str {
+		rnd_str[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(rnd_str)
 }

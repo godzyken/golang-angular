@@ -5,6 +5,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/godzyken/golang-angular/handlers"
+	handlers2 "golang-angular/handlers"
+	"golang-angular/models"
 	"gopkg.in/square/go-jose.v2"
 	"log"
 	"net/http"
@@ -23,9 +25,7 @@ var (
 func main() {
 	setAuth0Variables()
 	gin.SetMode(gin.DebugMode)
-	r := gin.Default()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	r := SetupRouter()
 	r.Use(cors.New(cors.Config{
 		AllowOriginFunc: func(origin string) bool { return true },
 		AllowOrigins:    []string{"*", "http://dev-c-559zpw.auth0.com"},
@@ -71,7 +71,7 @@ func main() {
 	// Profile
 
 	// Songs
-	authorized.POST("/song/createAsong", handlers.CreateAsong)
+	authorized.POST("/song", handlers.CreateAsong)
 
 	go func() {
 		err := r.Run("127.0.0.1:3000")
@@ -123,4 +123,22 @@ func preflight(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Headers", "access-control-origin, access-control-allow-headers")
 	c.JSON(http.StatusOK, struct{}{})
+}
+
+func SetupRouter() *gin.Engine {
+	mongo := models.DbMongo{}
+	mongo.SetDefault()
+
+	r := gin.Default()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+	r.Use(handlers2.MiddleDB(&mongo))
+
+	r.GET("/todo", handlers2.GetTodoListHandler)
+	r.POST("/todo", handlers2.AddTodoHandler)
+
+	r.GET("/song", handlers2.GetAsong)
+	r.POST("/todo", handlers2.CreateAsong)
+
+	return r
 }
