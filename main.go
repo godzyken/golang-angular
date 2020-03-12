@@ -5,8 +5,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/godzyken/golang-angular/handlers"
-	handlers2 "golang-angular/handlers"
-	"golang-angular/models"
+	"github.com/godzyken/golang-angular/models"
 	"gopkg.in/square/go-jose.v2"
 	"log"
 	"net/http"
@@ -132,13 +131,13 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	r.Use(handlers2.MiddleDB(&mongo))
+	r.Use(handlers.MiddleDB(&mongo))
 
-	r.GET("/todo", handlers2.GetTodoListHandler)
-	r.POST("/todo", handlers2.AddTodoHandler)
+	r.GET("/todo", handlers.GetTodoListHandler)
+	r.POST("/todo", handlers.AddTodoHandler)
 
-	r.GET("/song", handlers2.GetAsong)
-	r.POST("/todo", handlers2.CreateAsong)
+	r.GET("/song", handlers.GetAsong)
+	r.POST("/todo", handlers.CreateAsong)
 
 	return r
 }

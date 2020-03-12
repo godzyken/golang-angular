@@ -3,10 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/godzyken/golang-angular/models"
 	"github.com/godzyken/golang-angular/todo"
-	"golang-angular/models"
-	_ "gopkg.in/mgo.v2"
-	_ "gopkg.in/mgo.v2/bson"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 	"io"
 	"io/ioutil"
 	"net/http"
