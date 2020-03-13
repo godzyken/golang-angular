@@ -137,7 +137,7 @@ func SetupRouter() *gin.Engine {
 	r.POST("/todo", handlers.AddTodoHandler)
 
 	r.GET("/song", handlers.GetAsong)
-	r.POST("/todo", handlers.CreateAsong)
+	r.POST("/song", handlers.CreateAsong)
 
 	return r
 }
